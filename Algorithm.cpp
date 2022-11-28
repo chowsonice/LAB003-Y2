@@ -18,21 +18,25 @@ using namespace std;
 //SELECTION-SORT
 
 void selectionSort_cmp(int* &a, int n, unsigned long long &count_cmp){
-	if (++count_cmp && n < 1) return;
-	for (int t = n - 1; t >= 0; t--){
-		count_cmp++;
-		if (++count_cmp && a[t] > a[n - 1]) HoanVi(a[n - 1], a[t]);
-	}
-	selectionSort_cmp(a, n - 1, count_cmp);
+    int min;
+	for (int i = 0; ++count_cmp && i < n - 1; i++){
+        min = i;
+        for (int j = i + 1; ++count_cmp && j < n; j++){
+            if (++count_cmp && a[j] < a[min]) min = j;
+        }
+        swap(a[min], a[i]);
+    }
 }
 void selectionSort_time(int* &a, int n, unsigned long long &time){
 	auto start = std::chrono::high_resolution_clock::now();
-	while (n >= 1){
-		for (int t = n - 1; t >= 0; t--){
-			if (a[t] > a[n - 1]) HoanVi(a[n - 1], a[t]);
-		}
-		n--;
-	}
+	int min;
+    for (int i = 0; i < n - 1; i++){
+        min = i;
+        for (int j = i + 1; j < n; j++){
+            if (a[j] < a[min]) min = j;
+        }
+        swap(a[min], a[i]);
+    }
 	auto elapsed = std::chrono::high_resolution_clock::now() - start;
 	time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();	
 }
