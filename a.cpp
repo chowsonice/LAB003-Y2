@@ -69,7 +69,7 @@ struct ALGR{
 	long long unsigned time;
 public:
 	void printresult(){
-		if (strcmp(name, "-comp") == 0) printf("Comparisons: %llu\n", cmp);
+		if (strcmp(para, "-comp") == 0) printf("Comparisons: %llu\n", cmp);
 		if (strcmp(para, "-time") == 0) printf("Time: %llu\n", time);
 		else if (strcmp(para, "-both") == 0){
 			printf("Comparisons: %llu\nTime: %llu\n", cmp, time);
@@ -77,7 +77,6 @@ public:
 	}
 
 	void algorithm_run(int a[], int n){
-
 		if (strcmp(name, "selection-sort") == 0){
 			if (strcmp(para, "-comp") == 0) selectionSort_cmp(a, n, cmp);
 			else if (strcmp(para, "-time") == 0) selectionSort_time(a, n, time);
@@ -100,7 +99,7 @@ public:
 			}
 			else return;
 		}
-		if (strcmp(name, "insertion-sort") == 0){
+		if (strcmp(name, "binary-insertion-sort") == 0){
 			if (strcmp(para, "-comp") == 0) insertionSort_cmp(a, n, cmp);
 			if (strcmp(para, "-time") == 0) insertionSort_time(a, n, time);
 			else if (strcmp(para, "-both") == 0){
@@ -148,7 +147,7 @@ public:
 };
 
 void printCresult(ALGR a1, ALGR a2){
-			printf("Comparisons: %llu | %llu\nTime: %llu | %llu\n", a1.cmp, a2.cmp, a1.time, a2.time);
+			printf("Comparisions: %llu | %llu\nTime: %llu | %llu\n", a1.cmp, a2.cmp, a1.time, a2.time);
 }
 
 bool fread(char* filename, int* &a, int &n){
@@ -236,13 +235,25 @@ void command2(char** argv){
 	return;
 }
 
+void fwrite(string filename, int a[], int n) {
+	ofstream fout;
+	fout.open(filename);
+
+	fout << n << endl;
+
+	for (int i = 0; i < n; i++) {
+		fout << a[i] << " ";
+	}
+
+	fout.close();
+}
+
 void command3(char** argv){
 	//mchau
 	//INIT
 	ALGR al1;
 	char both[10];
 	strcpy(both, "-both");
-	char* in_order; //input order
 	
 	int* a;
 	int size;
@@ -255,21 +266,41 @@ void command3(char** argv){
 
 	//tao array random data
 	a = new int [size];
+	cout << "Input order: Ramdomize\n";
 	GenerateRandomData(a, size);
-	//nho tao array moi de chay thuat toan tren do, k dung array goc
+	//tao array moi de chay thuat toan tren do, k dung array goc
+	int* temp;
+	temp = duplicate(a, size);
+	fwrite("input_1.txt", a, size);
+	al1.algorithm_run(temp, size);
+	al1.printresult();
 
 	//tao array nearly sorted data
-
+	cout << "Input order: Nearly Sort\n";
+	GenerateNearlySortedData(a, size);
+	fwrite("input_2.txt", a, size);
+	al1.algorithm_run(temp, size);
+	al1.printresult();
+	
 	//tao array sorted
+	cout << "Input order: Sorted\n";
+	GenerateSortedData(a, size);
+	fwrite("input_3.txt", a, size);
+	al1.algorithm_run(temp, size);
+	al1.printresult();
 
 	//tao array reversed sorted
-
+	cout << "Input order: Reversed\n";
+	GenerateReverseData(a, size);
+	fwrite("input_4.txt", a, size);
+	al1.algorithm_run(temp, size);
+	al1.printresult();
 	//ghi array moi tao vao file
 
 	//chay thuat toan tren array 
-	
+	// al1.algorithm_run(temp, size);
 	//cout time + comparisons
-	al1.printresult();
+	// al1.printresult();
 }
 
 void command4(char** argv){
