@@ -275,14 +275,14 @@ void merge_cmp(int* &a, int l, int m, int r, unsigned long long& count_compare)
     int n2 = r - m;
     int* L = new int [n1];
     int* R = new int [n2];
-    for(i = 0; i < n1; i++)
+    for(i = 0; ++count_compare && i < n1; i++)
         L[i] = a[l + i];
     for(j = 0; ++count_compare && j < n2; j++)
         R[j] = a[m + 1 + j];
     i = 0;
     j= 0;
     k = l;
-    while(++count_compare && i < n1 && j < n2)
+    while((++count_compare && i < n1) && (++count_compare &&j < n2))
     {
         if(++count_compare && L[i] <= R[j])
         {
