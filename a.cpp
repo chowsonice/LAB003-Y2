@@ -143,6 +143,17 @@ public:
 			}
 			else return;
 		}
+		if (strcmp(name, "quick-sort") == 0){
+			if (strcmp(para, "-comp") == 0) quickSort_cmp(a, 0, n - 1, cmp);
+			if (strcmp(para, "-time") == 0) quickSort_time(a, n, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				quickSort_cmp(a, 0, n - 1, cmp);
+				quickSort_time(b, n, time);
+				delete[] b;
+			}
+			else return;
+		}
 	}	
 };
 
