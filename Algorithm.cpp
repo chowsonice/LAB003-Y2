@@ -425,3 +425,68 @@ void radixSort_cmp(int* a, int n, unsigned long long &comp)
 		}
 	}
 }
+
+//-------------------------------------------------
+//Quick Sort:
+
+void quickSort(int* &a, int left, int right){
+	int i, j, x;
+	if (left >= right)
+		return;
+	x = a[(left+right)/2];//// chọn phần tử giữa làm giá trị mốc
+	i = left; j = right;
+	while(i < j) {
+		while(a[i] < x)
+			i++;
+		while(a[j] > x)
+			j--;
+		if(i <= j) {
+			HoanVi(a[i], a[j]);
+			i++ ;
+			j--;
+		}
+	}
+	quickSort(a, left, j);
+	quickSort(a, i, right);
+}
+
+void quickSort_cmp(int* &a, int left, int right, unsigned long long& count_compare)
+{
+    int i, j, x;
+	count_compare = 0;
+	if (left >= right)
+		return;
+	x = a[(left+right)/2];
+	i = left; j = right;
+	while(i < j) {
+		// search for an element that is > the partition element
+		while(a[i] < x && i < j){
+			i++;
+			count_compare++;
+		}
+		// search for an element that is < the partition element
+		while(a[j] > x && j > left){
+			j--;
+			count_compare++;
+		}
+		// swap the elements
+		if(i <= j) {
+			HoanVi(a[i], a[j]);
+			i++ ;
+			j--;
+		}
+	}
+	
+	//quickSort_cmp(a, left, j, count_compare);
+	//quickSort_cmp(a, i, right, count_compare);
+    
+}
+
+void quickSort_time(int* &a, int n, unsigned long long &time)
+{
+    time = 0;
+	auto start = chrono::high_resolution_clock::now();
+    quickSort(a, 0, n - 1);
+    auto elapsed = chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+}
