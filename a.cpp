@@ -239,7 +239,18 @@ void command1(char** argv){
 	al1.printresult();
 	return;
 }
+void fwrite(string filename, int a[], int n) {
+	ofstream fout;
+	fout.open(filename);
 
+	fout << n << endl;
+
+	for (int i = 0; i < n; i++) {
+		fout << a[i] << " ";
+	}
+
+	fout.close();
+}
 void command2(char** argv){
 	//huy
 	//INIT
@@ -257,33 +268,44 @@ void command2(char** argv){
 	al1 = {argv[2], argv[5], 0, 0};
 	size = atoi(argv[3]);
 	in_order = argv[4];
-	//remember to create duplicate before running algorithms
+	a = new int [size];
 
 	//generate input
-
+	if(strcmp(in_order, "-rand")==0){
+		GenerateRandomData(a, size);
+		fwrite("input.txt", a, size);
+	}
+	else if(strcmp(in_order, "-nsorted")==0){
+		GenerateNearlySortedData(a, size);
+		fwrite("input.txt", a, size);
+	}
+	else if(strcmp(in_order, "-sorted")==0){
+		GenerateSortedData(a, size);
+		fwrite("input.txt", a, size);
+	}
+	else{
+		GenerateReverseData(a, size);
+		fwrite("input.txt", a, size);
+	}
 	//write input in file
 
 	//algorithm
 
 	//write output in file
+	al1.algorithm_run(a, size); //to call an algorithm
+
+	//WRITE FILE
+	fout << size << endl;
+	for (int i = 0; i < size; i++){
+		fout << a[i] << " ";
+	}
 
 	//cout time - comparisons
 	al1.printresult();
 	return;
 }
 
-void fwrite(string filename, int a[], int n) {
-	ofstream fout;
-	fout.open(filename);
 
-	fout << n << endl;
-
-	for (int i = 0; i < n; i++) {
-		fout << a[i] << " ";
-	}
-
-	fout.close();
-}
 
 void command3(char** argv){
 	//mchau
