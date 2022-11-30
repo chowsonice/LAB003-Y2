@@ -27,13 +27,6 @@ bool isNumber(char number[]){
 	return true;
 } //only used in cmdline
 
-int* duplicate(int a[], int n){
-	int* b = new int [n];
-	for (int i = 0; i < n; i++) b[i] = a[i];
-	return b;
-}
-
-
 
 //------------------------------------------
 
@@ -99,7 +92,7 @@ public:
 			}
 			else return;
 		}
-		if (strcmp(name, "binary-insertion-sort") == 0){
+		if (strcmp(name, "insertion-sort") == 0){
 			if (strcmp(para, "-comp") == 0) insertionSort_cmp(a, n, cmp);
 			if (strcmp(para, "-time") == 0) insertionSort_time(a, n, time);
 			else if (strcmp(para, "-both") == 0){
@@ -139,6 +132,39 @@ public:
 				int* b = duplicate(a, n);
 				radixSort_cmp(a, n, cmp);
 				radixSort_time(b, n, time);
+				delete[] b;
+			}
+			else return;
+		}
+		if (strcmp(name, "counting-sort") == 0){
+			if (strcmp(para, "-comp") == 0) countingSort_cmp(a, n, cmp);
+			if (strcmp(para, "-time") == 0) countingSort_time(a, n, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				countingSort_cmp(a, n, cmp);
+				countingSort_time(b, n, time);
+				delete[] b;
+			}
+			else return;
+		}
+		if (strcmp(name, "shaker-sort") == 0){
+			if (strcmp(para, "-comp") == 0) shakerSort_cmp(a, 0, n - 1, cmp);
+			if (strcmp(para, "-time") == 0) shakerSort_time(a, 0, n - 1, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				shakerSort_cmp(a, 0, n - 1, cmp);
+				shakerSort_time(b, 0, n - 1, time);
+				delete[] b;
+			}
+			else return;
+		}
+		if (strcmp(name, "shell-sort") == 0){
+			if (strcmp(para, "-comp") == 0) shellSort_cmp(a, n, cmp);
+			if (strcmp(para, "-time") == 0) shellSort_time(a, n, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				shellSort_cmp(a, n, cmp);
+				shellSort_time(b, n, time);
 				delete[] b;
 			}
 			else return;
@@ -263,44 +289,40 @@ void command3(char** argv){
 
 	al1 = {argv[2], argv[4], 0, 0};
 	size = atoi(argv[3]);
+	a = new int [size];
 
 	//tao array random data
-	a = new int [size];
 	cout << "Input order: Ramdomize\n";
 	GenerateRandomData(a, size);
 	//tao array moi de chay thuat toan tren do, k dung array goc
-	int* temp;
-	temp = duplicate(a, size);
 	fwrite("input_1.txt", a, size);
-	al1.algorithm_run(temp, size);
+	al1.algorithm_run(a, size);
 	al1.printresult();
 
 	//tao array nearly sorted data
+	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Nearly Sort\n";
 	GenerateNearlySortedData(a, size);
 	fwrite("input_2.txt", a, size);
-	al1.algorithm_run(temp, size);
+	al1.algorithm_run(a, size);
 	al1.printresult();
 	
 	//tao array sorted
+	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Sorted\n";
 	GenerateSortedData(a, size);
 	fwrite("input_3.txt", a, size);
-	al1.algorithm_run(temp, size);
+	al1.algorithm_run(a, size);
 	al1.printresult();
 
 	//tao array reversed sorted
+	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Reversed\n";
 	GenerateReverseData(a, size);
 	fwrite("input_4.txt", a, size);
-	al1.algorithm_run(temp, size);
+	al1.algorithm_run(a, size);
 	al1.printresult();
 	//ghi array moi tao vao file
-
-	//chay thuat toan tren array 
-	// al1.algorithm_run(temp, size);
-	//cout time + comparisons
-	// al1.printresult();
 }
 
 void command4(char** argv){
