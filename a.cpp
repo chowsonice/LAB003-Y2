@@ -183,7 +183,7 @@ public:
 	}	
 };
 
-void printCresult(ALGR a1, ALGR a2){
+void print_cmpresult(ALGR a1, ALGR a2){
 			printf("Comparisions: %llu | %llu\nTime: %llu | %llu\n", a1.cmp, a2.cmp, a1.time, a2.time);
 }
 
@@ -400,14 +400,12 @@ void command4(char** argv){
 		return;
 	}
 
-	//nho tao array moi de chay thuat toan tren do, k dung array goc
-	int* temp1;
-	temp1 = duplicate(a, size);
+	//nho tao array moi de chay thuat toan tren do, k dung array goc --khong can nua 
 	// fwrite("input_1.txt", a, size);
-	al1.algorithm_run(temp1, size);
+	al1.algorithm_run(a, size);
 	al1.printresult();
 	//chay thuat toan al1 va al2 
-	al2.algorithm_run(temp1, size);
+	al2.algorithm_run(a, size);
 	al2.printresult();
 	//cout time + comparisons
 	
