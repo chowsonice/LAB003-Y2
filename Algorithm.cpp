@@ -73,7 +73,6 @@ void insertionSort_time(int* a, int n, unsigned long long &time)
 }
 void insertionSort_cmp(int* a, int n, unsigned long long &comp)
 { 
-	comp = 0;
 	int current;
 	for (int i = 1; ++comp && i < n; i++)
 	{
