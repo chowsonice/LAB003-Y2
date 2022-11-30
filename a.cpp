@@ -180,6 +180,17 @@ public:
 			}
 			else return;
 		}
+		if (strcmp(name, "flash-sort") == 0){
+			if (strcmp(para, "-comp") == 0) flashSort_cmp(a, n, cmp);
+			else if (strcmp(para, "-time") == 0) flashSort_time(a, n, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				flashSort_cmp(a, n, cmp);
+				flashSort_time(b, n, time);
+				delete[] b;
+			}
+			else return;
+		}
 	}	
 };
 
