@@ -92,7 +92,7 @@ public:
 			}
 			else return;
 		}
-		if (strcmp(name, "insertion-sort") == 0){
+		if (strcmp(name, "binary-insertion-sort") == 0){
 			if (strcmp(para, "-comp") == 0) insertionSort_cmp(a, n, cmp);
 			if (strcmp(para, "-time") == 0) insertionSort_time(a, n, time);
 			else if (strcmp(para, "-both") == 0){
@@ -165,6 +165,17 @@ public:
 				int* b = duplicate(a, n);
 				shellSort_cmp(a, n, cmp);
 				shellSort_time(b, n, time);
+				delete[] b;
+			}
+			else return;
+		}
+		if (strcmp(name, "quick-sort") == 0){
+			if (strcmp(para, "-comp") == 0) quickSort_cmp(a, 0, n - 1, cmp);
+			else if (strcmp(para, "-time") == 0) quickSort_time(a, n, time);
+			else if (strcmp(para, "-both") == 0){
+				int* b = duplicate(a, n);
+				quickSort_cmp(a, 0, n - 1, cmp);
+				quickSort_time(b, n, time);
 				delete[] b;
 			}
 			else return;
@@ -325,6 +336,22 @@ void command3(char** argv){
 	//ghi array moi tao vao file
 }
 
+
+/*
+– "input_1.txt": random order data
+– "input_2.txt": nearly sorted data
+– "input_3.txt": sorted data
+– "input_4.txt": reversed data
+
+Input order:
+• -rand: randomized data
+• -nsorted: nearly sorted data
+• -sorted: sorted data
+• -rev: reverse sorted data
+*/
+//Run two sorting algorithms on the given input.
+//– Prototype: [Execution file] -c [Algorithm 1] [Algorithm 2] [Given input]
+//– Ex: a.exe -c heap-sort merge-sort input.txt
 void command4(char** argv){
 	//yen
 	//INIT
@@ -352,13 +379,22 @@ void command4(char** argv){
 	}
 
 	//nho tao array moi de chay thuat toan tren do, k dung array goc
-
+	int* temp1;
+	temp1 = duplicate(a, size);
+	// fwrite("input_1.txt", a, size);
+	al1.algorithm_run(temp1, size);
+	al1.printresult();
 	//chay thuat toan al1 va al2 
-
+	al2.algorithm_run(temp1, size);
+	al2.printresult();
 	//cout time + comparisons
-	al1.printresult();	
+	
+	// al1.printresult();	
 }
 
+//Run two sorting algorithms on the data generated automatically.
+//– Prototype: [Execution file] -c [Algorithm 1] [Algorithm 2] [Input size][Input order]
+//– Ex: a.exe -c quick-sort merge-sort 100000 -nsorted
 void command5(char** argv){
 	//yen
 	//INIT

@@ -659,3 +659,71 @@ void flashSort_cmp(int* &a, int n, unsigned long long &time){
     insertionSort(a, n);
     return;
 }
+
+void quickSort(int* &a, int left, int right){
+	int i, j, x;
+	if (left >= right)
+		return;
+	x = a[(left+right)/2];//// chọn phần tử giữa làm giá trị mốc
+	i = left; j = right;
+	
+	do
+    {
+        while(a[i]<x)
+        {            
+             i++;
+        }
+        while(a[j]>x)
+        {
+            j--;
+        }
+        if(i<=j)
+        {
+            HoanVi(a[i], a[j]);
+            i++ ; j--;
+        }
+    }
+    while(i<=j);   
+    if (left<j) quickSort(a,left,j);
+    if (i < right) quickSort(a,i,right); 
+}
+
+void quickSort_cmp(int* &a, int left, int right, unsigned long long& count_compare)
+{
+    int i, j, x;
+	// count_compare = 0;
+	if (++count_compare && left >= right)
+		return;
+	x = a[(left+right)/2];
+	i = left; j = right;
+	
+	do
+    {
+        while(++count_compare && a[i]<x)
+        {            
+             i++;
+        }
+        while(++count_compare && a[j]>x)
+        {
+            j--;
+        }
+        if(++count_compare && i<=j)
+        {
+            HoanVi(a[i],a[j]);
+            i++ ; j--;
+        }
+    }
+    while(++count_compare && i<=j);   
+    if (++count_compare && left<j) quickSort_cmp(a,left,j,count_compare);
+    if (++count_compare && i<right) quickSort_cmp(a,i,right,count_compare); 
+	
+}
+
+void quickSort_time(int* &a, int n, unsigned long long &time)
+{
+    time = 0;
+	auto start = chrono::high_resolution_clock::now();
+    quickSort(a, 0, n - 1);
+    auto elapsed = chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+}
