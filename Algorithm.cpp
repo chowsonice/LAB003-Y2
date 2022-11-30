@@ -575,14 +575,73 @@ void shellSort_time(int*& a, int n, unsigned long long &time)
     auto elapsed = chrono::high_resolution_clock::now() - start;
     time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
 }
-void flashSort(int* &a, int n){
-    int m = int(n * 0.45);
+void flashSort_cmp(int* a, int n, unsigned long long &cmp){
+    // int m = int(n * 0.45);
+    int m = sqrt(n);
+    int min = a[0], maxp = 0;
+    for (int i = 0; ++cmp && i < n; i++){
+        if (a[i] > a[maxp]) maxp = i;
+        if (a[i] < min) min = a[i];
+    }
+    int* l = new int [m]; int* ltemp = new int [m];//last
+    for (int i = 0; i < m; i++) l[i] = 0;
+    int k;
+    for (int i = 0; ++cmp && i < n; i++){
+        k = int((m - 1) * (a[i] - min) / (a[maxp] - min));
+        l[k]++;
+    }
+    const double c = double(m - 1) / double(a[maxp] - min);
+
+    for (int i = 1; i < m; i++){
+        ltemp[i] = l[i];
+        l[i] += l[i - 1];
+    }
+
+    ltemp[0] = l[0];
+
+    //swap
+    HoanVi(a[0], a[maxp]);
+
+    int j = 0, nmove = 0;
+    k = 0;
+
+    if ((++cmp && m - 1 < 0) || ( ++cmp && a[maxp] - min < 0)) return;
+
+    while (++cmp && nmove < n - 1){
+        while (++cmp && j > l[k] - 1){
+            j++;
+            k = int(c * (a[j] - min));
+        }
+        while (++cmp && j != l[k]){
+            k = int(c * (a[j] - min));
+
+            HoanVi(a[j], a[l[k] - 1]);
+            l[k]--;
+            nmove++;
+        }
+    }
+    int s = 0; //start of each bucket
+    for (int i = 0; ++cmp && i < m; i++){
+        insertionSort_cmp(a + s, ltemp[i] - s, cmp);
+        //cout << *(a + s) << " " << ltemp[i] - s << endl;
+        s = ltemp[i];
+    }
+    delete[] l;
+    delete[] ltemp;
+    return;
+
+}
+void flashSort_time(int* a, int n, unsigned long long &time){
+    auto start = chrono::high_resolution_clock::now();
+    // double p = sqrt(n);
+    // int m = int(n * p);
+    int m = sqrt(n);
     int min = a[0], maxp = 0;
     for (int i = 0; i < n; i++){
         if (a[i] > a[maxp]) maxp = i;
         if (a[i] < min) min = a[i];
     }
-    int* l = new int [m]; //last
+    int* l = new int [m]; int* ltemp = new int [m];//last
     for (int i = 0; i < m; i++) l[i] = 0;
     int k;
     for (int i = 0; i < n; i++){
@@ -591,8 +650,12 @@ void flashSort(int* &a, int n){
     }
     const double c = double(m - 1) / double(a[maxp] - min);
 
-    for (int i = 1; i < m; i++) l[i] += l[i - 1];
-    
+    for (int i = 1; i < m; i++){
+        ltemp[i] = l[i];
+        l[i] += l[i - 1];
+    }
+    ltemp[0] = l[0];
+
     //swap
     HoanVi(a[0], a[maxp]);
 
@@ -614,51 +677,19 @@ void flashSort(int* &a, int n){
             nmove++;
         }
     }
-    insertionSort(a, n);
+    int s = 0; //start of each bucket
+    for (int i = 0; i < m; i++){
+        insertionSort(a + s, ltemp[i] - s);
+        // cout << *(a + s) << " " << ltemp[i] - s << endl;
+        s = ltemp[i];
+    }
+    auto elapsed = chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+    delete[] l;
+    delete[] ltemp;
     return;
 }
-void flashSort_cmp(int* &a, int n, unsigned long long &time){
-    int m = int(n * 0.45);
-    int min = a[0], maxp = 0;
-    for (int i = 0; i < n; i++){
-        if (a[i] > a[maxp]) maxp = i;
-        if (a[i] < min) min = a[i];
-    }
-    int* l = new int [m]; //last
-    for (int i = 0; i < m; i++) l[i] = 0;
-    int k;
-    for (int i = 0; i < n; i++){
-        k = int((m - 1) * (a[i] - min) / (a[maxp] - min));
-        l[k]++;
-    }
-    const double c = double(m - 1) / double(a[maxp] - min);
 
-    for (int i = 1; i < m; i++) l[i] += l[i - 1];
-    
-    //swap
-    HoanVi(a[0], a[maxp]);
-
-    int j = 0, nmove = 0;
-    k = 0;
-
-    if (m - 1 < 0 || a[maxp] - min < 0) return;
-
-    while (nmove < n - 1){
-        while (j > l[k] - 1){
-            j++;
-            k = int(c * (a[j] - min));
-        }
-        while (j != l[k]){
-            k = int(c * (a[j] - min));
-
-            HoanVi(a[j], a[l[k] - 1]);
-            l[k]--;
-            nmove++;
-        }
-    }
-    insertionSort(a, n);
-    return;
-}
 
 void quickSort(int* &a, int left, int right){
 	int i, j, x;
