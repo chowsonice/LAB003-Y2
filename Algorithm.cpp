@@ -89,37 +89,37 @@ void insertionSort_cmp(int* a, int n, unsigned long long &comp)
 
 //BUBBLE SORT
 void bubbleSort(int*& a, int n){
-    bool HoanViped;
+    bool swapped;
     for(int i = 0; i < n-1; i++)
     {
-        HoanViped = false;
+        swapped = false;
         for(int j = 0; j < n-i-1; j++)
         {
             if(a[j] > a[j+1])
             {
                 HoanVi(a[j], a[j+1]);
-                HoanViped = true;
+                swapped = true;
             }
         }
-        if(HoanViped == false)
+        if(swapped == false)
             break;
     }
 }
 
 void bubbleSort_cmp(int*& a, int n, unsigned long long& count_compare){
-    bool HoanViped;
+    bool swapped;
     for(int i = 0; ++count_compare && i < n-1; i++)
     {
-        HoanViped = false;
+        swapped = false;
         for(int j = 0; ++count_compare && j < n-i-1; j++)
         {
             if(++count_compare && a[j] > a[j+1])
             {
                 HoanVi(a[j], a[j+1]);
-                HoanViped = true;
+                swapped = true;
             }
         }
-        if(++count_compare && HoanViped == false)
+        if(++count_compare && swapped == false)
             break;
     }
 }
@@ -520,18 +520,18 @@ void shakerSort_cmp(int a[], int n, unsigned long long &cmp){
 }
 void shakerSort_time(int a[], int n, unsigned long long &time){
     auto startt = chrono::high_resolution_clock::now();
-    bool flag = 1;
+    bool flag = true;
     int start = 0, end = n - 1;
     //first forward pass
     while (start < end){
         for (int i = start; i < end; i++){
             if (a[i] > a[i + 1]){
-                flag = false;
                 HoanVi(a[i + 1], a[i]);
+                flag = false;
             }
         }
         if (flag) return;
-        flag = true;
+        flag = false;
         end--;
         for (int i = end; i > start; i--){
             if (a[i] < a[i - 1]){
@@ -544,7 +544,6 @@ void shakerSort_time(int a[], int n, unsigned long long &time){
     }
     auto elapsed = chrono::high_resolution_clock::now() - startt;
     time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
-    
 }
 void shellSort_cmp(int*& a, int n, unsigned long long &count_compare)
 {
