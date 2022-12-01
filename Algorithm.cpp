@@ -495,17 +495,19 @@ void countingSort_time(int* a, int n, unsigned long long &time){
 
 //SHAKER SORT
 void shakerSort_cmp(int a[], int n, unsigned long long &cmp){
-    bool flag = true;
+    bool flag;
     int start = 0, end = n - 1;
+    //first forward pass
     while (++cmp && start < end){
+        flag = true;
         for (int i = start; ++cmp && i < end; i++){
             if (++cmp && a[i] > a[i + 1]){
-                flag = false;
                 HoanVi(a[i + 1], a[i]);
+                flag = false;
             }
         }
-        if (flag) return;
-        flag = true;
+        if (flag) break;
+        flag = false;
         end--;
         for (int i = end; ++cmp && i > start; i--){
             if (++cmp && a[i] < a[i - 1]){
@@ -513,24 +515,25 @@ void shakerSort_cmp(int a[], int n, unsigned long long &cmp){
                 flag = false;
             }
         }
-        if (flag) return;
+        if (flag) break;
         start++;
     }
     
 }
 void shakerSort_time(int a[], int n, unsigned long long &time){
     auto startt = chrono::high_resolution_clock::now();
-    bool flag = true;
+    bool flag;
     int start = 0, end = n - 1;
     //first forward pass
     while (start < end){
+        flag = true;
         for (int i = start; i < end; i++){
             if (a[i] > a[i + 1]){
                 HoanVi(a[i + 1], a[i]);
                 flag = false;
             }
         }
-        if (flag) return;
+        if (flag) break;
         flag = false;
         end--;
         for (int i = end; i > start; i--){
@@ -539,7 +542,7 @@ void shakerSort_time(int a[], int n, unsigned long long &time){
                 flag = false;
             }
         }
-        if (flag) return;
+        if (flag) break;
         start++;
     }
     auto elapsed = chrono::high_resolution_clock::now() - startt;

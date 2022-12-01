@@ -27,14 +27,18 @@ bool isNumber(char number[]){
 	return true;
 } //only used in cmdline
 
+int caseData(char* argv)
+{
+    if (strcmp(argv, "-rand") == 0) return 0;
+    if (strcmp(argv, "-sorted") == 0) return 1;
+    if (strcmp(argv, "-rev") == 0) return 2;
+    if (strcmp(argv, "-nsorted") == 0) return 3;
+    return -1;
+}
 
 //------------------------------------------
 
 int cmdline(int argc, char** argv){
-	//COMMAND LINE
-	//https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/
-	//argc is the number of arguments given to main
-
 	if (strcmp(argv[1], "-a") == 0){
 		if (argc == 5){
 			if (!isNumber(argv[3])) return 1;
@@ -59,7 +63,7 @@ struct ALGR{
 	char* name;
 	char* para;
 	long long unsigned cmp = 0;
-	long long unsigned time;
+	long long unsigned time = 0;
 public:
 	void printresult(){
 		if (strcmp(para, "-comp") == 0) printf("Comparisons: %llu\n", cmp);
@@ -212,6 +216,19 @@ bool fread(char* filename, int* &a, int &n){
 	return true;
 }
 
+void fwrite(string filename, int a[], int n) {
+	ofstream fout;
+	fout.open(filename);
+
+	fout << n << endl;
+
+	for (int i = 0; i < n; i++) {
+		fout << a[i] << " ";
+	}
+
+	fout.close();
+}
+
 //------------------------------
 
 void command1(char** argv){
@@ -226,9 +243,6 @@ void command1(char** argv){
 	int* a;
 	int size;
 
-	ofstream fout;
-	fout.open("output.txt");
-
 	al1 = {argv[2], argv[4], 0, 0};
 	filename = argv[3];
 
@@ -238,33 +252,35 @@ void command1(char** argv){
 		cout << "Read file failed!\n";
 		return;
 	}
+	fwrite("output.txt", a, size);
 
+	cout << "ALGORITHM MODE  " << endl;
 	al1.algorithm_run(a, size); //to call an algorithm
 
 	//WRITE FILE
-	fout << size << endl;
-	for (int i = 0; i < size; i++){
-		fout << a[i] << " ";
-	}
 
-	al1.printresult();
+	cout << "Algorithm:  " << argv[2] << endl;
+	cout << "Input size  :  " << size << endl;
+	cout << "------------------------------" << endl;
+	if (strcmp(argv[5], "-both") == 0){
+		cout << "Running time:  " << al1.time << endl;
+		cout << "Comparison  :  " << al1.cmp << endl;
+	}
+	else if (strcmp(argv[5], "-comp") == 0)
+		cout << "Comparison  :  " << al1.cmp << endl;
+	else if (strcmp(argv[5], "-time") == 0)
+		cout << "Running time:  " << al1.time << endl;
+	
 	return;
 }
-void fwrite(string filename, int a[], int n) {
-	ofstream fout;
-	fout.open(filename);
 
-	fout << n << endl;
-
-	for (int i = 0; i < n; i++) {
-		fout << a[i] << " ";
-	}
-
-	fout.close();
-}
+//Run a sorting algorithm on the data generated automatically with specified size and order.
+//– Prototype: [Execution file] -a [Algorithm] [Input size] [Input order][Output parameter(s)]
+//– Ex: a.exe -a selection-sort 50 -rand -time
 void command2(char** argv){
 	//huy
 	//INIT
+	cout << "ALGORITHM MODE  " << endl;
 	ALGR al1;
 	char both[10];
 	strcpy(both, "-both");
@@ -273,46 +289,34 @@ void command2(char** argv){
 	int* a;
 	int size;
 
-	ofstream fout;
-	fout.open("output.txt");
-
 	al1 = {argv[2], argv[5], 0, 0};
 	size = atoi(argv[3]);
 	in_order = argv[4];
 	a = new int [size];
+	
+	//remember to create duplicate before running algorithms
 
 	//generate input
-	if(strcmp(in_order, "-rand")==0){
-		GenerateRandomData(a, size);
-		fwrite("input.txt", a, size);
-	}
-	else if(strcmp(in_order, "-nsorted")==0){
-		GenerateNearlySortedData(a, size);
-		fwrite("input.txt", a, size);
-	}
-	else if(strcmp(in_order, "-sorted")==0){
-		GenerateSortedData(a, size);
-		fwrite("input.txt", a, size);
-	}
-	else{
-		GenerateReverseData(a, size);
-		fwrite("input.txt", a, size);
-	}
+	GenerateData(a, size, caseData(in_order));
 	//write input in file
-
+	fwrite("input.txt", a, size);
 	//algorithm
-
+	al1.algorithm_run(a, size);
 	//write output in file
-	al1.algorithm_run(a, size); //to call an algorithm
-
-	//WRITE FILE
-	fout << size << endl;
-	for (int i = 0; i < size; i++){
-		fout << a[i] << " ";
+	fwrite("output.txt", a, size);
+	//print result:
+	cout << "Algorithm:  " << argv[2] << "  |  " << argv[3] << endl;
+	cout << "Input size  :  " << size << endl;
+	cout << "Input order  :  " << argv[4] << endl;
+	cout << "------------------------------" << endl;
+	if (strcmp(argv[5], "-both") == 0){
+		cout << "Running time:  " << al1.time << endl;
+		cout << "Comparison  :  " << al1.cmp << endl;
 	}
-
-	//cout time - comparisons
-	al1.printresult();
+	else if (strcmp(argv[5], "-comp") == 0)
+		cout << "Comparison  :  " << al1.cmp << endl;
+	else if (strcmp(argv[5], "-time") == 0)
+		cout << "Running time:  " << al1.time << endl;
 	return;
 }
 
@@ -370,24 +374,11 @@ void command3(char** argv){
 }
 
 
-/*
-– "input_1.txt": random order data
-– "input_2.txt": nearly sorted data
-– "input_3.txt": sorted data
-– "input_4.txt": reversed data
-
-Input order:
-• -rand: randomized data
-• -nsorted: nearly sorted data
-• -sorted: sorted data
-• -rev: reverse sorted data
-*/
 //Run two sorting algorithms on the given input.
 //– Prototype: [Execution file] -c [Algorithm 1] [Algorithm 2] [Given input]
 //– Ex: a.exe -c heap-sort merge-sort input.txt
 void command4(char** argv){
-	//yen
-	//INIT
+	cout << "COMPARISON MODE" << endl;
 	ALGR al1, al2;
 	char* filename;
 	char both[10];
@@ -399,7 +390,8 @@ void command4(char** argv){
 
 	ofstream fout;
 	fout.open("output.txt");
-
+	
+	//nho tao array moi de chay thuat toan tren do, k dung array goc
 	al1 = {argv[2], both, 0, 0};
 	al2 = {argv[3], both, 0, 0};
 	filename = argv[4];
@@ -411,24 +403,23 @@ void command4(char** argv){
 		return;
 	}
 
-	//nho tao array moi de chay thuat toan tren do, k dung array goc --khong can nua 
-	// fwrite("input_1.txt", a, size);
-	al1.algorithm_run(a, size);
-	al1.printresult();
 	//chay thuat toan al1 va al2 
+	al1.algorithm_run(a, size);
 	al2.algorithm_run(a, size);
-	al2.printresult();
-	//cout time + comparisons
-	
-	// al1.printresult();	
+	//print result:
+	cout << "Algorithm:  " << argv[2] << "  |  " << argv[3] << endl;
+	cout << "Input file  :  " << argv[4] << endl;
+	cout << "Input size  :  " << size << endl;
+	cout << "------------------------------" << endl;
+	cout << "Running time:  " << al1.time << "  |  " << al2.time << endl;
+	cout << "Comparison  :  " << al1.cmp << "  |  " << al2.cmp << endl;	
 }
 
 //Run two sorting algorithms on the data generated automatically.
 //– Prototype: [Execution file] -c [Algorithm 1] [Algorithm 2] [Input size][Input order]
 //– Ex: a.exe -c quick-sort merge-sort 100000 -nsorted
 void command5(char** argv){
-	//yen
-	//INIT
+	cout << "COMPARISON MODE" << endl;
 	ALGR al1, al2;
 	char both[10];
 	strcpy(both, "-both");
@@ -437,21 +428,30 @@ void command5(char** argv){
 	int* a;
 	int size;
 
-	ofstream fout;
-	fout.open("output.txt");
-
 	al1 = {argv[2], both, 0, 0};
 	al2 = {argv[3], both, 0, 0};
 	size = atoi(argv[4]);
 	in_order = argv[5];
-
+	a = new int [size];
+	
 	//generate data dung function tu file cua thay
-
+	GenerateData(a, size, caseData(in_order));
 	//ghi data moi tao vao file input
-
+	fwrite("input.txt", a, size);
+	
 	//chay thuat toan
+	al1.algorithm_run(a, size);
+	al2.algorithm_run(a, size);
 
-	//cout
+	fwrite("output.txt", a, size);
+	
+	//print result:
+	cout << "Algorithm:  " << argv[2] << "  |  " << argv[3] << endl;
+	cout << "Input size  :  " << size << endl;
+	cout << "Input order  :  " << argv[5] << endl;
+	cout << "------------------------------" << endl;
+	cout << "Running time:  " << al1.time << "  |  " << al2.time << endl;
+	cout << "Comparison  :  " << al1.cmp << "  |  " << al2.cmp << endl;
 
 }
 
