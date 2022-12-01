@@ -494,54 +494,37 @@ void countingSort_time(int* a, int n, unsigned long long &time){
 }
 
 //SHAKER SORT
-void shakerSort(int a[], int start, int end){
-    //first forward pass
-    bool flag = true;
-    if (start >= end) return;
-    for (int i = start; i < end; i++){
-        if (a[i + 1] < a[i]){
-            HoanVi(a[i + 1], a[i]);
-            flag = false;
+void shakersort(int a[], int n, unsigned long long &cmp){
+    int start = 0, end = n - 1;
+    while (++cmp && start < end){
+        for (int i = start; ++cmp && i < end; i++){
+            if (++cmp && a[i] > a[i + 1]) HoanVi(a[i + 1], a[i]);
         }
-    }
-    if (flag) return;
-    flag = true;
-    for (int i = end - 1; i > start; i--){
-        if (a[i] < a[i - 1]){
-            HoanVi(a[i], a[i - 1]);
-            flag = false;
+        end--;
+        for (int i = end; ++cmp && i > start; i--){
+            if (++cmp && a[i] < a[i - 1]) HoanVi(a[i], a[i - 1]);
         }
+        start++;
     }
-    if (flag) return;
-    shakerSort(a, start + 1, end - 1);
+    
 }
-
-void shakerSort_cmp(int a[], int start, int end, unsigned long long &cmp){
+void shakerSort_time(int a[], int n){
+    auto start = chrono::high_resolution_clock::now();
+    int start = 0, end = n - 1;
     //first forward pass
-    bool flag = true;
-    if (++cmp && start >= end) return;
-    for (int i = start; ++cmp && i < end; i++){
-        if (++cmp && a[i + 1] < a[i]){
-            HoanVi(a[i + 1], a[i]);
-            flag = false;
+    while (start < end){
+        for (int i = start; i < end; i++){
+            if (a[i] > a[i + 1]) HoanVi(a[i + 1], a[i]);
         }
-    }
-    if (flag) return;
-    flag = true;
-    for (int i = end - 1; ++cmp && i > start; i--){
-        if (++cmp && a[i] < a[i - 1]){
-            HoanVi(a[i], a[i - 1]);
-            flag = false;
+        end--;
+        for (int i = end; i > start; i--){
+            if (a[i] < a[i - 1]) HoanVi(a[i], a[i - 1]);
         }
+        start++;
     }
-    if (flag) return;
-    shakerSort_cmp(a, start + 1, end - 1, cmp);
-}
-void shakerSort_time(int a[], int start, int end, unsigned long long &time){
-    auto starttime = chrono::high_resolution_clock::now();
-    shakerSort(a, start, end);
-    auto elapsed = chrono::high_resolution_clock::now() - starttime;
+    auto elapsed = chrono::high_resolution_clock::now() - start;
     time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+    
 }
 void shellSort_cmp(int*& a, int n, unsigned long long &count_compare)
 {
