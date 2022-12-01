@@ -23,9 +23,9 @@ int* duplicate(int* a, int n){
 }
 
 
-void selectionSort_cmp(int* &a, int n, unsigned long long &count_cmp){
+void selectionSort_cmp(int* a, int n, unsigned long long &count_cmp){
     int min;
-	for (int i = 0; ++count_cmp && i < n - 1; i++){
+    for (int i = 0; ++count_cmp && i < n - 1; i++){
         min = i;
         for (int j = i + 1; ++count_cmp && j < n; j++){
             if (++count_cmp && a[j] < a[min]) min = j;
@@ -33,9 +33,9 @@ void selectionSort_cmp(int* &a, int n, unsigned long long &count_cmp){
         swap(a[min], a[i]);
     }
 }
-void selectionSort_time(int* &a, int n, unsigned long long &time){
-	auto start = std::chrono::high_resolution_clock::now();
-	int min;
+void selectionSort_time(int* a, int n, unsigned long long &time){
+    auto start = std::chrono::high_resolution_clock::now();
+    int min;
     for (int i = 0; i < n - 1; i++){
         min = i;
         for (int j = i + 1; j < n; j++){
@@ -43,12 +43,12 @@ void selectionSort_time(int* &a, int n, unsigned long long &time){
         }
         swap(a[min], a[i]);
     }
-	auto elapsed = std::chrono::high_resolution_clock::now() - start;
-	time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();	
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();    
 }
 
 //INSERTION SORT
-void insertionSort(int* &a, int n)
+void insertionSort(int* a, int n)
 { 
     int current;
     for (int i = 1; i < n; i++)
@@ -66,25 +66,25 @@ void insertionSort(int* &a, int n)
 }
 void insertionSort_time(int* a, int n, unsigned long long &time)
 { 
-	auto start = chrono::high_resolution_clock::now();
-	insertionSort(a, n);
-	auto elapsed = chrono::high_resolution_clock::now() - start;
-	time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+    auto start = chrono::high_resolution_clock::now();
+    insertionSort(a, n);
+    auto elapsed = chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
 }
 void insertionSort_cmp(int* a, int n, unsigned long long &comp)
 { 
-	int current;
-	for (int i = 1; ++comp && i < n; i++)
-	{
-		current = a[i];
-		int j = i - 1;
-		while (++comp && j >= 0 && ++comp && a[j] > current)
-		{
-			a[j + 1] = a[j];
-			j--;
-		}
-		a[j + 1] = current;
-	}
+    int current;
+    for (int i = 1; ++comp && i < n; i++)
+    {
+        current = a[i];
+        int j = i - 1;
+        while (++comp && j >= 0 && ++comp && a[j] > current)
+        {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = current;
+    }
 }
 
 //BUBBLE SORT
@@ -125,10 +125,10 @@ void bubbleSort_cmp(int*& a, int n, unsigned long long& count_compare){
 }
 
 void bubbleSort_time(int*& a, int n, unsigned long long &time){
-	auto start = std::chrono::high_resolution_clock::now();
-	bubbleSort(a, n);
-	auto elapsed = std::chrono::high_resolution_clock::now() - start;
-	time = chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();	
+    auto start = std::chrono::high_resolution_clock::now();
+    bubbleSort(a, n);
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();   
     return;
 }
 
@@ -176,8 +176,8 @@ void heapSort_time(int* arr, int n, unsigned long long &time)
     }
 
     auto elapsed = std::chrono::high_resolution_clock::now() - start;
-	time = chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();	
-	return;
+    time = chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();   
+    return;
 }
 
 void heapify_cmp(int arr[], int n, int i, unsigned long long &cmp)  
@@ -205,7 +205,7 @@ void heapify_cmp(int arr[], int n, int i, unsigned long long &cmp)
 void buildHeap_cmp(int arr[], int n, unsigned long long &cmp)  
 { 
     for (int i = n/2-1; i >= 0; i--){
-    	cmp++;
+        cmp++;
         heapify_cmp(arr, n, i, cmp);
     }
 }
@@ -217,7 +217,7 @@ void heapSort_cmp(int* arr, int n, unsigned long long &cmp)
     int temp;
     HoanVi(arr[0], arr[n - 1]);
     for (int i = n-1; i > 0; i--){
-    	cmp++;
+        cmp++;
         heapify_cmp(arr, i, 0, cmp);
         HoanVi(arr[0], arr[i - 1]);
     }
@@ -268,7 +268,7 @@ void merge(int*& a, int l, int m, int r)
     delete[] R;
 }
 
-void mergeSort(int* &a, int left, int right)
+void mergeSort(int* a, int left, int right)
 {
     int mid;
     if(left < right)
@@ -280,7 +280,7 @@ void mergeSort(int* &a, int left, int right)
     }
 }
 
-void merge_cmp(int* &a, int l, int m, int r, unsigned long long& count_compare)
+void merge_cmp(int* a, int l, int m, int r, unsigned long long& count_compare)
 {
     int i, j, k;
     int n1 = m - l + 1;
@@ -322,7 +322,7 @@ void merge_cmp(int* &a, int l, int m, int r, unsigned long long& count_compare)
     }
 }
 
-void mergeSort_cmp(int* &a, int left, int right, unsigned long long& count_compare)
+void mergeSort_cmp(int* a, int left, int right, unsigned long long& count_compare)
 {
     int mid;
     if(++count_compare && left < right)
@@ -346,100 +346,100 @@ void mergeSort_time(int a[], int n, unsigned long long &time)
 //RADIX
 void radixSort_time(int* a, int n, unsigned long long &time)
 {
-	// Find max value
-	auto start = chrono::high_resolution_clock::now();
-	int max = a[0];
-	for (int i = 0; i < n; i++)
-	{
-		if (max < a[i])
-		{
-			max = a[i];
-		}
-	}
-	// 
-	for (int exp = 1; max / exp > 0; exp *= 10)
-	{
-		int* output = new int[n];
-		int* count = new int[10];
+    // Find max value
+    auto start = chrono::high_resolution_clock::now();
+    int max = a[0];
+    for (int i = 0; i < n; i++)
+    {
+        if (max < a[i])
+        {
+            max = a[i];
+        }
+    }
+    // 
+    for (int exp = 1; max / exp > 0; exp *= 10)
+    {
+        int* output = new int[n];
+        int* count = new int[10];
 
-		for (int i = 0; i < 10; i++)
-		{
-			count[i] = 0;
-		}
-		for (int i = 0; i < n; i++)
-		{
-			count[(a[i] / exp) % 10]++;
-		}
-		// 
-		for (int i = 1; i < 10; i++)///////////////////////
-		{
-			count[i] += count[i - 1];
-		}
+        for (int i = 0; i < 10; i++)
+        {
+            count[i] = 0;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            count[(a[i] / exp) % 10]++;
+        }
+        // 
+        for (int i = 1; i < 10; i++)///////////////////////
+        {
+            count[i] += count[i - 1];
+        }
 
-		// 
-		for (int i = n - 1; i >= 0; i--)
-		{
-			output[count[(a[i] / exp) % 10] - 1] = a[i];
-			count[(a[i] / exp) % 10]--;
-		}
-		// copy
-		for (int i = 0; i < n; i++)
-		{
-			a[i] = output[i];
-		}
-	}
-	auto elapsed = chrono::high_resolution_clock::now() - start;
-	time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
+        // 
+        for (int i = n - 1; i >= 0; i--)
+        {
+            output[count[(a[i] / exp) % 10] - 1] = a[i];
+            count[(a[i] / exp) % 10]--;
+        }
+        // copy
+        for (int i = 0; i < n; i++)
+        {
+            a[i] = output[i];
+        }
+    }
+    auto elapsed = chrono::high_resolution_clock::now() - start;
+    time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
 }
 
 void radixSort_cmp(int* a, int n, unsigned long long &comp)
 {
-	comp = 0;
-	// Find max value
-	int max = a[0];
-	for (int i = 0;++comp && i < n; i++)
-	{
-		if (++comp && max < a[i])
-		{
-			max = a[i];
-		}
-	}
-	// 
-	for (int exp = 1; ++comp && max / exp > 0; exp *= 10)
-	{
-		int* output = new int[n];
-		int* count = new int[10];
+    comp = 0;
+    // Find max value
+    int max = a[0];
+    for (int i = 0;++comp && i < n; i++)
+    {
+        if (++comp && max < a[i])
+        {
+            max = a[i];
+        }
+    }
+    // 
+    for (int exp = 1; ++comp && max / exp > 0; exp *= 10)
+    {
+        int* output = new int[n];
+        int* count = new int[10];
 
-		for (int i = 0; ++comp && i < 10; i++)
-		{
-			count[i] = 0;
-		}
-		for (int i = 0; ++comp && i < n; i++)
-		{
-			count[(a[i] / exp) % 10]++;
-		}
-		// 
-		for (int i = 1; ++comp && i < 10; i++)///////////////////////
-		{
-			count[i] += count[i - 1];
-		}
+        for (int i = 0; ++comp && i < 10; i++)
+        {
+            count[i] = 0;
+        }
+        for (int i = 0; ++comp && i < n; i++)
+        {
+            count[(a[i] / exp) % 10]++;
+        }
+        // 
+        for (int i = 1; ++comp && i < 10; i++)///////////////////////
+        {
+            count[i] += count[i - 1];
+        }
 
-		// 
-		for (int i = n - 1; ++comp && i >= 0; i--)
-		{
-			output[count[(a[i] / exp) % 10] - 1] = a[i];
-			count[(a[i] / exp) % 10]--;
-		}
-		// copy
-		for (int i = 0; ++comp && i < n; i++)
-		{
-			a[i] = output[i];
-		}
-	}
+        // 
+        for (int i = n - 1; ++comp && i >= 0; i--)
+        {
+            output[count[(a[i] / exp) % 10] - 1] = a[i];
+            count[(a[i] / exp) % 10]--;
+        }
+        // copy
+        for (int i = 0; ++comp && i < n; i++)
+        {
+            a[i] = output[i];
+        }
+    }
 }
 
 //COUNTING SORT
-void countingSort(int* &a, int n){
+void countingSort(int* a, int n){
     int min = a[0], max = a[0];
     int* ad = duplicate(a, n);
     for (int i = 0; i < n; i++){
@@ -462,7 +462,7 @@ void countingSort(int* &a, int n){
     }
     return;
 }
-void countingSort_cmp(int* &a, int n, unsigned long long &cmp){
+void countingSort_cmp(int* a, int n, unsigned long long &cmp){
     int min = a[0], max = a[0];
     int* ad = new int [n];
     for (int i = 0; ++cmp && i < n; i++) ad[i] = a[i];
@@ -486,7 +486,7 @@ void countingSort_cmp(int* &a, int n, unsigned long long &cmp){
     }
     return;
 }
-void countingSort_time(int* &a, int n, unsigned long long &time){
+void countingSort_time(int* a, int n, unsigned long long &time){
     auto start = chrono::high_resolution_clock::now();
     countingSort(a, n);
     auto elapsed = chrono::high_resolution_clock::now() - start;
@@ -690,14 +690,14 @@ void flashSort_time(int* a, int n, unsigned long long &time){
 }
 
 
-void quickSort(int* &a, int left, int right){
-	int i, j, x;
-	if (left >= right)
-		return;
-	x = a[(left+right)/2];//// chọn phần tử giữa làm giá trị mốc
-	i = left; j = right;
-	
-	do
+void quickSort(int* a, int left, int right){
+    int i, j, x;
+    if (left >= right)
+        return;
+    x = a[(left+right)/2];//// chọn phần tử giữa làm giá trị mốc
+    i = left; j = right;
+    
+    do
     {
         while(a[i]<x)
         {            
@@ -718,16 +718,16 @@ void quickSort(int* &a, int left, int right){
     if (i < right) quickSort(a,i,right); 
 }
 
-void quickSort_cmp(int* &a, int left, int right, unsigned long long& count_compare)
+void quickSort_cmp(int* a, int left, int right, unsigned long long& count_compare)
 {
     int i, j, x;
-	// count_compare = 0;
-	if (++count_compare && left >= right)
-		return;
-	x = a[(left+right)/2];
-	i = left; j = right;
-	
-	do
+    // count_compare = 0;
+    if (++count_compare && left >= right)
+        return;
+    x = a[(left+right)/2];
+    i = left; j = right;
+    
+    do
     {
         while(++count_compare && a[i]<x)
         {            
@@ -746,13 +746,13 @@ void quickSort_cmp(int* &a, int left, int right, unsigned long long& count_compa
     while(++count_compare && i<=j);   
     if (++count_compare && left<j) quickSort_cmp(a,left,j,count_compare);
     if (++count_compare && i<right) quickSort_cmp(a,i,right,count_compare); 
-	
+    
 }
 
-void quickSort_time(int* &a, int n, unsigned long long &time)
+void quickSort_time(int* a, int n, unsigned long long &time)
 {
     time = 0;
-	auto start = chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
     quickSort(a, 0, n - 1);
     auto elapsed = chrono::high_resolution_clock::now() - start;
     time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
