@@ -494,35 +494,54 @@ void countingSort_time(int* a, int n, unsigned long long &time){
 }
 
 //SHAKER SORT
-void shakersort(int a[], int n, unsigned long long &cmp){
+void shakerSort_cmp(int a[], int n, unsigned long long &cmp){
+    bool flag = true;
     int start = 0, end = n - 1;
     while (++cmp && start < end){
         for (int i = start; ++cmp && i < end; i++){
-            if (++cmp && a[i] > a[i + 1]) HoanVi(a[i + 1], a[i]);
+            if (++cmp && a[i] > a[i + 1]){
+                flag = false;
+                HoanVi(a[i + 1], a[i]);
+            }
         }
+        if (flag) return;
+        flag = true;
         end--;
         for (int i = end; ++cmp && i > start; i--){
-            if (++cmp && a[i] < a[i - 1]) HoanVi(a[i], a[i - 1]);
+            if (++cmp && a[i] < a[i - 1]){
+                HoanVi(a[i], a[i - 1]);
+                flag = false;
+            }
         }
+        if (flag) return;
         start++;
     }
     
 }
-void shakerSort_time(int a[], int n){
-    auto start = chrono::high_resolution_clock::now();
+void shakerSort_time(int a[], int n, unsigned long long &time){
+    auto startt = chrono::high_resolution_clock::now();
+    bool flag = 1;
     int start = 0, end = n - 1;
     //first forward pass
     while (start < end){
         for (int i = start; i < end; i++){
-            if (a[i] > a[i + 1]) HoanVi(a[i + 1], a[i]);
+            if (a[i] > a[i + 1]){
+                flag = false;
+            }
         }
+        if (flag) return;
+        flag = true;
         end--;
         for (int i = end; i > start; i--){
-            if (a[i] < a[i - 1]) HoanVi(a[i], a[i - 1]);
+            if (a[i] < a[i - 1]){
+                HoanVi(a[i], a[i - 1]);
+                flag = false;
+            }
         }
+        if (flag) return;
         start++;
     }
-    auto elapsed = chrono::high_resolution_clock::now() - start;
+    auto elapsed = chrono::high_resolution_clock::now() - startt;
     time = chrono::duration_cast<chrono::milliseconds>(elapsed).count();
     
 }

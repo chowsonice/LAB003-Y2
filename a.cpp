@@ -148,12 +148,12 @@ public:
 			else return;
 		}
 		if (strcmp(name, "shaker-sort") == 0){
-			if (strcmp(para, "-comp") == 0) shakerSort_cmp(a, 0, n - 1, cmp);
-			if (strcmp(para, "-time") == 0) shakerSort_time(a, 0, n - 1, time);
+			if (strcmp(para, "-comp") == 0) shakerSort_cmp(a, n, cmp);
+			if (strcmp(para, "-time") == 0) shakerSort_time(a, n, time);
 			else if (strcmp(para, "-both") == 0){
 				int* b = duplicate(a, n);
-				shakerSort_cmp(a, 0, n - 1, cmp);
-				shakerSort_time(b, 0, n - 1, time);
+				shakerSort_cmp(a, n, cmp);
+				shakerSort_time(b, n, time);
 				delete[] b;
 			}
 			else return;
