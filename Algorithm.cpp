@@ -527,6 +527,7 @@ void shakerSort_time(int a[], int n, unsigned long long &time){
         for (int i = start; i < end; i++){
             if (a[i] > a[i + 1]){
                 flag = false;
+                HoanVi(a[i + 1], a[i]);
             }
         }
         if (flag) return;
