@@ -202,7 +202,7 @@ void print_cmpresult(ALGR a1, ALGR a2){
 			printf("Comparisions: %llu | %llu\nTime: %llu | %llu\n", a1.cmp, a2.cmp, a1.time, a2.time);
 }
 
-bool fread(char* filename, int* &a, int &n){
+bool readfile(char* filename, int* &a, int &n){
 //READ FILE OR GENERATE ARRAY OF NUMBER
 	ifstream fin;
 	fin.open(filename);
@@ -216,7 +216,7 @@ bool fread(char* filename, int* &a, int &n){
 	return true;
 }
 
-void fwrite(string filename, int a[], int n) {
+void writefile(string filename, int a[], int n) {
 	ofstream fout;
 	fout.open(filename);
 
@@ -247,30 +247,22 @@ void command1(char** argv){
 	filename = argv[3];
 
 	//READ FILE
-	bool state = fread(filename, a, size);
+	bool state = readfile(filename, a, size);
 	if (!state){
 		cout << "Read file failed!\n";
 		return;
 	}
-	fwrite("output.txt", a, size);
+	writefile("output.txt", a, size);
 
 	cout << "ALGORITHM MODE  " << endl;
 	al1.algorithm_run(a, size); //to call an algorithm
 
 	//WRITE FILE
 
-	cout << "Algorithm:  " << argv[2] << endl;
+	cout << "Algorithm:  " << al1.name << endl;
 	cout << "Input size  :  " << size << endl;
 	cout << "------------------------------" << endl;
-	if (strcmp(argv[5], "-both") == 0){
-		cout << "Running time:  " << al1.time << endl;
-		cout << "Comparison  :  " << al1.cmp << endl;
-	}
-	else if (strcmp(argv[5], "-comp") == 0)
-		cout << "Comparison  :  " << al1.cmp << endl;
-	else if (strcmp(argv[5], "-time") == 0)
-		cout << "Running time:  " << al1.time << endl;
-	
+	al1.printresult();
 	return;
 }
 
@@ -299,24 +291,17 @@ void command2(char** argv){
 	//generate input
 	GenerateData(a, size, caseData(in_order));
 	//write input in file
-	fwrite("input.txt", a, size);
+	writefile("input.txt", a, size);
 	//algorithm
 	al1.algorithm_run(a, size);
 	//write output in file
-	fwrite("output.txt", a, size);
+	writefile("output.txt", a, size);
 	//print result:
 	cout << "Algorithm:  " << argv[2] << "  |  " << argv[3] << endl;
 	cout << "Input size  :  " << size << endl;
 	cout << "Input order  :  " << argv[4] << endl;
 	cout << "------------------------------" << endl;
-	if (strcmp(argv[5], "-both") == 0){
-		cout << "Running time:  " << al1.time << endl;
-		cout << "Comparison  :  " << al1.cmp << endl;
-	}
-	else if (strcmp(argv[5], "-comp") == 0)
-		cout << "Comparison  :  " << al1.cmp << endl;
-	else if (strcmp(argv[5], "-time") == 0)
-		cout << "Running time:  " << al1.time << endl;
+	al1.printresult();
 	return;
 }
 
@@ -343,7 +328,7 @@ void command3(char** argv){
 	cout << "Input order: Ramdomize\n";
 	GenerateRandomData(a, size);
 	//tao array moi de chay thuat toan tren do, k dung array goc
-	fwrite("input_1.txt", a, size);
+	writefile("input_1.txt", a, size);
 	al1.algorithm_run(a, size);
 	al1.printresult();
 
@@ -351,7 +336,7 @@ void command3(char** argv){
 	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Nearly Sort\n";
 	GenerateNearlySortedData(a, size);
-	fwrite("input_2.txt", a, size);
+	writefile("input_2.txt", a, size);
 	al1.algorithm_run(a, size);
 	al1.printresult();
 	
@@ -359,7 +344,7 @@ void command3(char** argv){
 	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Sorted\n";
 	GenerateSortedData(a, size);
-	fwrite("input_3.txt", a, size);
+	writefile("input_3.txt", a, size);
 	al1.algorithm_run(a, size);
 	al1.printresult();
 
@@ -367,7 +352,7 @@ void command3(char** argv){
 	al1.time = 0; al1.cmp = 0;
 	cout << "Input order: Reversed\n";
 	GenerateReverseData(a, size);
-	fwrite("input_4.txt", a, size);
+	writefile("input_4.txt", a, size);
 	al1.algorithm_run(a, size);
 	al1.printresult();
 	//ghi array moi tao vao file
@@ -397,7 +382,7 @@ void command4(char** argv){
 	filename = argv[4];
 
 	//mo file
-	bool state = fread(filename, a, size);
+	bool state = readfile(filename, a, size);
 	if (!state){
 		cout << "Read file failed!\n";
 		return;
@@ -411,8 +396,7 @@ void command4(char** argv){
 	cout << "Input file  :  " << argv[4] << endl;
 	cout << "Input size  :  " << size << endl;
 	cout << "------------------------------" << endl;
-	cout << "Running time:  " << al1.time << "  |  " << al2.time << endl;
-	cout << "Comparison  :  " << al1.cmp << "  |  " << al2.cmp << endl;	
+	print_cmpresult(al1, al2);
 }
 
 //Run two sorting algorithms on the data generated automatically.
@@ -437,22 +421,20 @@ void command5(char** argv){
 	//generate data dung function tu file cua thay
 	GenerateData(a, size, caseData(in_order));
 	//ghi data moi tao vao file input
-	fwrite("input.txt", a, size);
+	writefile("input.txt", a, size);
 	
 	//chay thuat toan
 	al1.algorithm_run(a, size);
 	al2.algorithm_run(a, size);
 
-	fwrite("output.txt", a, size);
+	writefile("output.txt", a, size);
 	
 	//print result:
 	cout << "Algorithm:  " << argv[2] << "  |  " << argv[3] << endl;
 	cout << "Input size  :  " << size << endl;
 	cout << "Input order  :  " << argv[5] << endl;
 	cout << "------------------------------" << endl;
-	cout << "Running time:  " << al1.time << "  |  " << al2.time << endl;
-	cout << "Comparison  :  " << al1.cmp << "  |  " << al2.cmp << endl;
-
+	print_cmpresult(al1, al2);
 }
 
 int main(int argc, char** argv){
